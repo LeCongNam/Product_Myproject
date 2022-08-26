@@ -1,8 +1,8 @@
-const ERecord = require('../../lib/util/record');
+const RecordService = require('../../lib/util/record');
 const knex = require('../../database/knex');
 
 
-class ProductService extends ERecord {
+class ProductService extends RecordService {
     constructor() {
         super()
     }

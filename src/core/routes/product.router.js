@@ -6,7 +6,7 @@ const productSchemas = require('../product/dto');
 
 const productControler = new ProductControler()
 
-router.post('/',
+router.get('/',
     productSchemas.getAllProductSchemas,
     productControler.getAllProduct
 )

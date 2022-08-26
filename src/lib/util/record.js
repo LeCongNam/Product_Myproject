@@ -8,7 +8,7 @@
 // const knex = require('knex');
 const knex = require('../../database/knex');
 
-class ERecord {
+class RecordService {
     constructor() {
         this.createSearch
     }
@@ -16,11 +16,10 @@ class ERecord {
     createSearch = async (search) => {
         try {
             const query = knex(search.type).select(search.results)
-            console.log({ 'CreateSearch': query.toSQL().toNative() }); //debug
+            // console.log({ 'CreateSearch': query.toSQL().toNative() }); //debug
             let data = []
             let pagination 
             let filters = []
-
 
             const fields = Object.keys(search.filters || {})
             if (!search.filters)
@@ -32,7 +31,6 @@ class ERecord {
             }
             // console.log( query.toSQL().toNative() ); //debug
 
-
             if (search.pagination) {
                 let total
                 let { limit, offset } = search.pagination
@@ -41,7 +39,7 @@ class ERecord {
                 data = await query
                     .limit(limit)
                     .offset(offset)
-                console.log({ 'Pagination': query.toSQL().toNative() }); //debug
+                // console.log({ 'Pagination': query.toSQL().toNative() }); //debug
                 const rescount = await query.count('id as total').first()
 
                 pagination = {
@@ -51,8 +49,7 @@ class ERecord {
                 }
 
             } else {
-                data = await query.where([])
-                
+                data = await query.where([]) 
             }
 
             return {
@@ -61,7 +58,7 @@ class ERecord {
             }
 
         } catch (error) {
-            console.log("Error: ", error);
+            // console.log("Error: ", error);
             throw error
         }
 
@@ -69,4 +66,4 @@ class ERecord {
 
 }
 
-module.exports = ERecord
+module.exports = RecordService
