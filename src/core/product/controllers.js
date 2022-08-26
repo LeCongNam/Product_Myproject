@@ -15,11 +15,11 @@ class ProductController {
         const isValid = await validationResult(req, res)
         if (!isValid) throw new Error('400a') 
         const body = _.pick(req.body, ['id', 'name'])
-        const result =  await this.productService.hello()
-        return res.json({
-            result: result || "OK"
-        })
+        const result =  await this.productService.findAll()
+
+        return res.json(result)
        } catch (error) {
+        console.log(error);
             throw new Error(error)
        }
     }
