@@ -7,15 +7,18 @@ class ProductService extends RecordService {
         super()
     }
 
-    findAll = async (req) => {
+    findAll = async () => {
         try {
             const data = await this.createSearch({
                 type: 'tb_product',
-                results: ['id','product_name', 'price','quantity'],
+                results: ['tb_product.id','product_name', 'price','quantity', 'first_name'],
                 filters: {
                     [`tb_product.product_name`]:['sp1']
                 },
-                pagination: {limit :10, offset: 2}
+                pagination: {limit :10, offset: 0},
+                joins:[
+                    {table: 'tb_user',first: 'tb_user.id', second: 'tb_product.id'}
+                ]
             })
             return data
         } catch (error) {

@@ -13,7 +13,6 @@ class ProductController {
        try {
         const isValid = await Validator(req, res)
         if (!isValid) return
-        const body = _.pick(req.body, ['id', 'name'])
         const result =  await this.productService.findAll()
 
         return res.json(result)

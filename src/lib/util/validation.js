@@ -5,7 +5,6 @@ const router = express.Router()
 const Validator = async (req, res) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
-        next()
         return true
     }
     if (req.headers.debug == 'T') {
