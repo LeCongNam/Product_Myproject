@@ -15,53 +15,53 @@ class ERecord {
 
     createSearch = async (search) => {
         try {
-            let data = []
-            let pagination = {}
-            let filters = []
             const query = knex(search.type).select(search.results)
+            console.log({ 'CreateSearch': query.toSQL().toNative() }); //debug
+            let data = []
+            let pagination 
+            let filters = []
+
+
             const fields = Object.keys(search.filters || {})
-            console.log(fields);
             if (!search.filters)
                 search.filters = {}
             if (fields.length > 0) {
                 for (const key of fields) {
-                    filters.push(search.filters[key])
+                    data = query.whereIn(key, search.filters[key])
                 }
-                data = query.whereIn(fields, filters)
-                console.log({ 'Filters': query.toSQL().toNative() }); //debug
-            } else {
-                data = query.where([])
             }
+            // console.log( query.toSQL().toNative() ); //debug
 
 
             if (search.pagination) {
-                const { limit, offset } = search.pagination
+                let total
+                let { limit, offset } = search.pagination
+                const skipItem = (offset -1)* limit
+                offset = skipItem < 0 ?0: offset
                 data = await query
                     .limit(limit)
                     .offset(offset)
-
+                console.log({ 'Pagination': query.toSQL().toNative() }); //debug
                 const rescount = await query.count('id as total').first()
 
                 pagination = {
                     limit: limit || 10,
                     offset: offset || 0,
-                    total: rescount['total'] || 0
+                    total: total = rescount?.total ?rescount?.total : 0
                 }
 
-                return {
-                    data,
-                    pagination
-                }
             } else {
                 data = await query.where([])
-                return {
-                    data
-                }
+                
             }
 
-
+            return {
+                data,
+                pagination
+            }
 
         } catch (error) {
+            console.log("Error: ", error);
             throw error
         }
 
