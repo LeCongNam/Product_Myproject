@@ -18,6 +18,10 @@ exports.up = async function (knex) {
             table.string('role', 10).notNullable();
             table.string('phone', 25).notNullable();
             table.string('address', 255).notNullable();
+            table.timestamp('createdAt').defaultTo(knex.fn.now())
+            table.timestamp('updatedAt').defaultTo(knex.fn.now())
+            table.boolean('isInactived').defaultTo(false)
+            table.boolean('isDeleted').defaultTo(false)
         })
     }
 };
@@ -26,6 +30,5 @@ exports.up = async function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = async function (knex) {
-    return await knex.schema.dropTableIfExists('tb_user')
+exports.down =  function () {
 };

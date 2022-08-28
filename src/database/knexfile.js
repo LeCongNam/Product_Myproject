@@ -7,14 +7,14 @@ module.exports = {
   development: {
     client: 'mysql2',
     connection: {
-      filename: __dirname + '/src/database/knex.js',
-      host: 'localhost',
-      user: 'admin',
-      password: 'Lecongnam97@',
-      database: 'product_manager'  
+      filename: __dirname + './knex.js',
+      host: "localhost",
+      user: 'root',
+      password: 'Abcd123@',
+      database: 'product_manager',  
     },
     migrations: {
-      directory: __dirname + '/migation'
+      directory: './migation'
     },
     seeds:{
       directory: '/seeds'

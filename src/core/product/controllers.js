@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const Validator = require('../../lib/util/validation');
+const Validator = require('../../lib/until/validation');
 const { validationResult } = require('express-validator')
 const ProductService = require('./services');
 

@@ -30,5 +30,6 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
-  }
+  },
+  "repository": "https://github.com/LeCongNam/Product_Myproject.git"
 }
