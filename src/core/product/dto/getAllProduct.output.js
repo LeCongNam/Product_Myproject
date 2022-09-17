@@ -1,13 +1,13 @@
-const { checkSchema } = require('express-validator');
+const { checkSchema } = require('express-validator')
 
-const getAllProduct =  checkSchema({
+const getAllProduct = checkSchema({
     id: {
-      isInt: true,
+        isInt: true,
+        optional: { options: { nullable: true } },
     },
-    name:{
-        isString: true
-    }
+    name: {
+        isString: true,
+    },
 })
 
 module.exports = getAllProduct
-

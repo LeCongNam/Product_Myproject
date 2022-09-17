@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: API WEBSITE FOR FINAL PROJECT itc.edu.vn
+  description: api for website project Final Examination https://itc.edu.vn
+  termsOfService: https://itc.edu.vn
+  contact:
+    name: API Support
+    url: https://itc.edu.vn
+    email: sagiri1412@gmail.com
+  license:
+    name: Apache 3.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.1
+servers:
+  - url: http://localhost:3000
+    description: dev
+  - url: http://192.168.1.10:3000
+    description: lan
+  - url: https://staging-api.example.com
+    description: staging
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    GET_PROFILE:
+      type: object
+      properties:
+        messageCode:
+          type: string
+          example: "200a"
+    LOGIN:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "lecongnam@gmail.com"
+paths:
+  /api/user/login:
+    post:
+      summary: Get Data Profile User
+      description: Get Data Profile User
+      tags: [ User ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: lecongnam@gmail.com
+                password:
+                  type: string
+                  example: Abcd123@
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GET_PROFILE'
+  /api/user/profile:
+    get:
+      summary: Get Data Profile User
+      description: Get Data Profile User
+      tags: [ User ]
+      parameters:
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GET_PROFILE'
