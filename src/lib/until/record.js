@@ -15,7 +15,7 @@ const knex = require('../../database/knex')
 class RecordService {
     createSearch = async (search) => {
         try {
-            console.log('Search: ', search)
+            // console.log('Search: ', search) //debug
             const query = knex(search.type).select(search.results)
             const queryCount = knex(search.type).select(search.results)
             let data = []
@@ -33,17 +33,16 @@ class RecordService {
 
             if (!search.pagination) {
                 data = await query.where([])
-                console.log(query.toSQL().toNative()) //debug
+                // console.log(query.toSQL().toNative()) //debug
                 return [...(data || [])]
             }
 
             if (search.pagination) {
-                let total = 0
                 let { limit, offset } = search.pagination
                 const skipItem = (offset - 1) * limit
                 offset = skipItem < 0 ? 0 : offset
                 data = await query.limit(limit).offset(offset)
-                console.log({ Pagination: query.toSQL().toNative() }) //debug
+                // console.log({ Pagination: query.toSQL().toNative() }) //debug
                 const rescount = await queryCount
                     .count(`${search.type}.id as total`)
                     .first()
@@ -51,7 +50,7 @@ class RecordService {
                 pagination = {
                     limit: limit || 10,
                     offset: offset || 0,
-                    total: (total = rescount?.total ? rescount?.total : 0),
+                    total: rescount?.total ? rescount?.total : 0,
                 }
             }
 
@@ -60,7 +59,7 @@ class RecordService {
                 pagination,
             }
         } catch (error) {
-            console.log('Error: ', error) //debug
+            // console.log('Error: ', error) //debug
             throw new Error(error)
         }
     }

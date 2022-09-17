@@ -106,7 +106,6 @@ class UserController {
             messageCode: 'success',
         })
     }
-
 }
 
 module.exports = UserController
