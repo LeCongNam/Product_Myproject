@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const database = {
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
@@ -8,6 +6,9 @@ const database = {
     db_name: process.env.DATABASE_NAME,
 }
 
-console.log(database);
+const PRIVATE_KEY = process.env.PRIVATE_KEY
 
-module.exports = database
+module.exports = {
+    database,
+    PRIVATE_KEY,
+}

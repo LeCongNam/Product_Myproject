@@ -7,7 +7,7 @@ const standarProductSearch = {
         `${ERecord.product}.product_name`,
         `${ERecord.product}.price`,
         `${ERecord.product}.quantity`,
-        `${ERecord.product}first_name`
+        `${ERecord.product}first_name`,
     ],
     filters: {
         [`${ERecord.product}.isInactived`]: [0],
@@ -16,8 +16,6 @@ const standarProductSearch = {
     pagination: { limit: 10, offset: 0 },
 }
 
-
-
 module.exports = {
-    standarProductSearch
+    standarProductSearch,
 }

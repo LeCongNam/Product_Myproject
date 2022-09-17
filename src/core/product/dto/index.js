@@ -1,6 +1,5 @@
-const getAllProductSchemas = require('./getAllProduct.output');
-
+const getAllProductSchemas = require('./getAllProduct.output')
 
 module.exports = {
-    getAllProductSchemas
+    getAllProductSchemas,
 }

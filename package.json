@@ -10,14 +10,20 @@
     "migrate:make": "node ./node_modules/knex/bin/cli.js migrate:make init --knexfile ./src/database/knexfile.js",
     "migrate:up": "node ./node_modules/knex/bin/cli.js  migrate:up  --knexfile ./src/database/knexfile.js",
     "migrate:down": "node ./node_modules/knex/bin/cli.js  migrate:down  --knexfile ./src/database/knexfile.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier:check": "prettier --check **/*.js",
+    "prettier:fix": "prettier --write **/*.js",
+    "check": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.2",
+    "eslint-plugin-prettier": "^4.2.1",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.14.2",
@@ -25,10 +31,18 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^2.2.0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "morgan": "^1.10.0",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "prettier": "^2.7.1",
+    "swagger-ui-express": "^4.5.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "eslint": "^8.23.0",
+    "eslint-config-pre`ttier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "husky": "^8.0.1",
     "nodemon": "^2.0.19"
   },
   "repository": "https://github.com/LeCongNam/Product_Myproject.git"
