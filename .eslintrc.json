@@ -28,10 +28,5 @@
     "rules": {
         "no-console": "error",
         "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
-        "object-curly-newline": ["error", {
-            "ObjectPattern": { "multiline": true },
-            "ImportDeclaration": "never",
-            "ExportDeclaration": { "multiline": true, "minProperties": 3 }
-        }]
     }
 }
