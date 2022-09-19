@@ -15,10 +15,7 @@
     "overrides": [],
     "parserOptions": {
         "sourceType": "module",
-        "ecmaVersion": "latest",
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true
-        }
+        "ecmaVersion": "latest"
     },
     "ignorePatterns": [
         "**/node_modules/**",
