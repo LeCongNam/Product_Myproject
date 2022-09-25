@@ -17,7 +17,7 @@
     "lint:fix": "eslint . --fix",
     "prepare": "husky install"
   },
-  "author": "",
+  "author": "lecongnam",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
