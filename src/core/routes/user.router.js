@@ -3,11 +3,15 @@ const router = express.Router()
 
 const UserController = require('../user/controllers')
 const JWTServices = require('../../modules/jwt/jwt')
+const ProductController = require('../product/controllers')
+
 const userSchemas = require('../user/dto')
+const productSchemas = require('../product/dto')
 
 // constants
 const userController = new UserController()
 const jwtServices = new JWTServices()
+const productController = new ProductController()
 
 router.post('/register', userSchemas.registerSchema, userController.register)
 
@@ -28,4 +32,9 @@ router.put(
     userController.editProfile
 )
 
+router.get(
+    '/product',
+    productSchemas.getAllProductSchemas,
+    productController.getAllProduct
+)
 module.exports = router

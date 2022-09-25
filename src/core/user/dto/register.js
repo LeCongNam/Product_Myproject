@@ -16,12 +16,12 @@ const Register = checkSchema({
         isEmail: true,
     },
     phone: {
-        isString: true,
-        custom: (value) => {
-            const isPhone = value.test(/[^0]\ds/)
-            if (isPhone) return true
-            return false
-        },
+        isMobilePhone: true,
+        // custom: (value) => {
+        //     const isPhone = value.test(/^[0]+*\ds/)
+        //     if (isPhone) return true
+        //     return false
+        // },
     },
     gender: {
         isString: true,

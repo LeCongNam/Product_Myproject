@@ -1,12 +1,15 @@
 const { checkSchema } = require('express-validator')
 
 const getAllProduct = checkSchema({
-    id: {
+    limit: {
         isInt: true,
-        optional: { options: { nullable: true } },
+    },
+    offset: {
+        isInt: true,
     },
     name: {
         isString: true,
+        optional: { options: { nullable: true } },
     },
 })
 

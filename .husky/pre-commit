@@ -4,6 +4,6 @@
 
 npm run prettier:check
 npm run prettier:fix
-# npm run check
+npm run check
 # npm run fix
 # npm run lint:fix

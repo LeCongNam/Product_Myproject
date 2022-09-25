@@ -99,19 +99,19 @@ class JWT extends RecordService {
                         type: ERecord.user,
                         results: [`${ERecord.user}.id`, `${ERecord.user}.role`],
                         filters: {
-                            [`${ERecord.user}.id`]: [id],
+                            [`${ERecord.user}.id`]: [isValidToke.data],
                             [`${ERecord.user}.isDeleted`]: [0],
                             [`${ERecord.user}.isInactived`]: [0],
                         },
                     })
                     const isRole = role.includes(userInfo[0].role)
                     if (isRole) {
-                        req.headers.author = isRole[0].id
+                        req.headers.author = userInfo[0].id
                         return next()
                     }
                 }
                 return res.status(401).json({
-                    messageCode: '401a',
+                    messageCode: 'Permission Denined!!!',
                 })
             } catch (error) {
                 throw error

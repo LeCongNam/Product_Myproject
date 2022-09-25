@@ -24,7 +24,7 @@ class UserController {
         if (success)
             return res.json({
                 messageCode: '200a',
-                data,
+                x,
             })
         return res.json({
             messageCode: '420d',

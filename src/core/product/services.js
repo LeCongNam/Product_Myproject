@@ -1,47 +1,116 @@
 const RecordService = require('../../lib/until/record')
 const knex = require('../../database/knex')
-const trn = require('../../lib/until/transaction')
 const { standarProductSearch } = require('./constants')
+const { ERecord } = require('../../lib/enum/enum')
 
 class ProductService extends RecordService {
-    // eslint-disable-next-line no-useless-constructor
     constructor() {
         super()
     }
 
-    findAll = async () => {
+    findAll = async (req) => {
         try {
-            const data = await this.createSearch(standarProductSearch)
+            const filters = {}
+            const likes = []
+            for (const param in req.query) {
+                if (param) {
+                    if (param === 'isInactived' || param === 'isDeleted')
+                        filters[`${ERecord.product}.${param}`] = [
+                            req.query[param],
+                        ]
+                    if (param === 'name')
+                        likes.push({
+                            field: `${ERecord.product}.productName`,
+                            value: req.query[param],
+                        })
+                }
+            }
+            const data = await this.createSearch({
+                ...standarProductSearch,
+                filters: {
+                    ...standarProductSearch.filters,
+                    ...filters,
+                },
+                pagination: {
+                    limit: req.query.limit,
+                    offset: req.query.offset,
+                },
+                likes,
+            })
             return data
         } catch (error) {
             throw error
         }
     }
 
-    save = async (newData) => {
-        trn.transaction()
-        let method = 'POST'
-        if (newData.id) method = 'PUT'
-        if (newData.isDeleted) method = 'DELETE'
+    findOne = async (req) => {
+        return await this.createSearch({
+            type: ERecord.product,
+            results: [`${ERecord.product}.*`],
+            filters: {
+                [`${ERecord.product}.id`]: [req.params.id],
+            },
+        })
+    }
 
+    saveProduct = async (newData) => {
+        const trn = await knex.transaction()
         try {
-            if (method === 'POST') {
-                await knex(`${ERecord.product}`).insert(newData)
-            } else {
-                if (method === 'PUT')
-                    await knex(`${ERecord.product}`)
-                        .where('id', '=', newData.id)
-                        .update(newData)
-
-                if (method === 'DELETE')
-                    await knex(`${ERecord.product}`)
-                        .where('id', '=', newData.id)
-                        .update(newData)
+            const findUserExits = await this.createSearch({
+                type: ERecord.product,
+                results: [`${ERecord.product}.id`],
+                filters: {
+                    [`${ERecord.product}.isDeleted`]: [0],
+                    [`${ERecord.product}.isInactived`]: [0],
+                    [`${ERecord.product}.productName`]: [newData.productName],
+                },
+            })
+            if (findUserExits.length > 0) {
+                throw Error('Duplicate Product!')
             }
 
-            trn.commit()
+            await knex(`${ERecord.product}`).insert(newData).transacting(trn)
+
+            await trn.commit()
+            return {
+                success: true,
+            }
         } catch (error) {
-            trn.rollBack()
+            await trn.rollback()
+            throw error
+        }
+    }
+
+    editProduct = async (newData) => {
+        const trn = await knex.transaction()
+        try {
+            const findUserExits = await this.createSearch({
+                type: ERecord.product,
+                results: [`${ERecord.product}.id`],
+                filters: {
+                    [`${ERecord.product}.isDeleted`]: [0],
+                    [`${ERecord.product}.isInactived`]: [0],
+                    [`${ERecord.product}.id`]: [newData.id],
+                },
+            })
+            if (findUserExits.length === 0) {
+                throw Error('Product Not Found!')
+            }
+
+            await knex(`${ERecord.product}`)
+                .where('id', '=', newData.id)
+                .update({
+                    ...newData,
+                    updatedAt: knex.raw('now()'),
+                })
+                .transacting(trn)
+
+            await trn.commit()
+            return {
+                success: true,
+            }
+        } catch (error) {
+            await trn.rollback()
             throw error
         }
     }

@@ -8,8 +8,9 @@
  *  {table: 'brand', first: 'tb_user.id', second; 'brand.userid'},
  *  {table: 'brand2', first: 'tb_user.id', second; 'brand2.userid'},
  * ]
+ * @likes likes = [{ field: user.name, value: 'lecongnam' }]
  */
-// const knex = require('knex');
+
 const knex = require('../../database/knex')
 
 class RecordService {
@@ -31,27 +32,36 @@ class RecordService {
                 }
             }
 
+            if (search.likes) {
+                for (const like of search.likes) {
+                    query.where(
+                        like.field,
+                        'like',
+                        `%${like.value.replaceAll('%', '\\%')}%`
+                    )
+                }
+            }
+
             if (!search.pagination) {
                 data = await query.where([])
                 // console.log(query.toSQL().toNative()) //debug
                 return [...(data || [])]
             }
 
-            if (search.pagination) {
-                let { limit, offset } = search.pagination
-                const skipItem = (offset - 1) * limit
-                offset = skipItem < 0 ? 0 : offset
-                data = await query.limit(limit).offset(offset)
-                // console.log({ Pagination: query.toSQL().toNative() }) //debug
-                const rescount = await queryCount
-                    .count(`${search.type}.id as total`)
-                    .first()
+            let { limit, offset } = search.pagination
+            limit = limit >= 0 ? limit : 10
+            offset = offset >= 0 ? limit * offset : 0
 
-                pagination = {
-                    limit: limit || 10,
-                    offset: offset || 0,
-                    total: rescount?.total ? rescount?.total : 0,
-                }
+            data = await query.limit(limit).offset(offset)
+            // console.log({ Pagination: query.toSQL().toNative() }) //debug
+            const rescount = await queryCount
+                .count(`${search.type}.id as total`)
+                .first()
+
+            const pagination = {
+                limit: limit || 10,
+                offset: offset || 0,
+                total: rescount?.total ? rescount?.total : 0,
             }
 
             return {

@@ -1,6 +1,6 @@
 const RecordService = require('../../lib/until/record')
 const knex = require('../../database/knex')
-const { standardUserSearch } = require('./constants')
+const { standardUserSearch, adminFindAllUser } = require('./constants')
 const { ERecord } = require('../../lib/enum/enum')
 const JWT = require('../../modules/jwt/jwt')
 const moment = require('moment')
@@ -16,7 +16,7 @@ class UserServices extends RecordService {
         let raw = ''
         for (const param in req.query) {
             if (param) {
-                if (param == 'name') {
+                if (param === 'name') {
                     raw += ` (${ERecord.user}.firstName like "%${req.query[param]}%" or ${ERecord.user}.lastName like "%${req.query[param]}%") `
                 }
             }
@@ -29,9 +29,9 @@ class UserServices extends RecordService {
 
     findOne = async (search) => {
         const filters = {}
-        for (const item in search) {
-            if (item == 'email' || item == 'id')
-                filters[`${ERecord.user}.${item}`] = [search[item]]
+        for (const param in search) {
+            if (param === 'email' || param === 'id')
+                filters[`${ERecord.user}.${param}`] = [search[param]]
         }
         return await this.createSearch({
             ...standardUserSearch,
@@ -39,6 +39,27 @@ class UserServices extends RecordService {
                 ...standardUserSearch.filters,
                 ...filters,
             },
+        })
+    }
+
+    findAllUserByAdmin = async (req) => {
+        const filters = {}
+        for (const param in req.query) {
+            if (
+                param === 'email' ||
+                param === 'id' ||
+                param == 'isDeleted' ||
+                param == 'isInactived'
+            )
+                filters[`${ERecord.user}.${param}`] = [req.query[param]]
+        }
+        return await this.createSearch({
+            ...adminFindAllUser,
+            filters: {
+                ...standardUserSearch.filters,
+                ...filters,
+            },
+            pagination: { limit: req.query.limit, offset: req.query.offset },
         })
     }
 
