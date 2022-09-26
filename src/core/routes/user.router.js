@@ -12,6 +12,7 @@ const productSchemas = require('../product/dto')
 const userController = new UserController()
 const jwtServices = new JWTServices()
 const productController = new ProductController()
+const { param } = require('express-validator')
 
 router.post('/register', userSchemas.registerSchema, userController.register)
 
@@ -37,4 +38,7 @@ router.get(
     productSchemas.getAllProductSchemas,
     productController.getAllProduct
 )
+
+router.get('/product/:id', param('id').isInt(), userController.getDetailProduct)
+
 module.exports = router

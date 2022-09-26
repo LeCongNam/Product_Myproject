@@ -97,6 +97,33 @@ class ProductController {
                 ...(response || []),
             })
     }
+
+    getOneDetailUser = async (req, res) => {
+        const isValid = await Validator(req, res)
+        if (!isValid) return
+        const response = await this.userServices.findOneByAdmin(req)
+        return res
+            .status(200)
+            .type('json')
+            .json({
+                data: { ...response[0] },
+            })
+    }
+
+    saveUserByAdmin = async (req, res) => {
+        const isValid = await Validator(req, res)
+        if (!isValid) return
+        const body = _.pick(req.body, [
+            'id',
+            'isDeleted',
+            'isInactived',
+            'memo',
+        ])
+        await this.userServices.save(body)
+        return res.status(200).type('json').json({
+            message: 'Update Thanh cong',
+        })
+    }
 }
 
 module.exports = ProductController

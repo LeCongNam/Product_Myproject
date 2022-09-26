@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const AdminController = require('../admin/controllers')
-const userSchemas = require('../user/dto')
+// const userSchemas = require('../user/dto')
 const productSchemas = require('../product/dto')
 const JWT = require('../../modules/jwt/jwt')
 const { param } = require('express-validator')
@@ -13,51 +13,30 @@ const jwtService = new JWT()
 
 router.get(
     '/product',
-    jwtService.verifyRole(['admin']),
+    jwtService.verifyRole(['trader']),
     productSchemas.getAllProductByAdminSchemas,
     adminController.getAllProduct
 )
 
 router.get(
     '/product/:id',
-    jwtService.verifyRole(['admin']),
+    jwtService.verifyRole(['trader']),
     param('id').isInt(),
     adminController.getOneProductByAdmin
 )
 
 router.post(
     '/save-product',
-    jwtService.verifyRole(['admin']),
+    jwtService.verifyRole(['trader']),
     productSchemas.saveProduct,
     adminController.saveProduct
 )
 
 router.put(
     '/edit-product',
-    jwtService.verifyRole(['admin']),
+    jwtService.verifyRole(['trader']),
     productSchemas.editProduct,
     adminController.editProduct
-)
-
-router.get(
-    '/user',
-    jwtService.verifyRole(['admin']),
-    userSchemas.getAllUser,
-    adminController.getAllUser
-)
-
-router.get(
-    '/user/:id',
-    jwtService.verifyRole(['admin']),
-    param('id').isUUID(),
-    adminController.getOneDetailUser
-)
-
-router.post(
-    '/user',
-    jwtService.verifyRole(['admin']),
-    userSchemas.saveUserByAdmin,
-    adminController.saveUserByAdmin
 )
 
 module.exports = router
