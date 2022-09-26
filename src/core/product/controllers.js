@@ -19,6 +19,7 @@ class ProductController {
             throw error
         }
     }
+
     saveProduct = async (req, res) => {
         const isValid = await Validator(req, res)
         if (!isValid) return

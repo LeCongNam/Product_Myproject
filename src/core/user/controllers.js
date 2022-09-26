@@ -3,6 +3,7 @@ const Validator = require('../../lib/until/validation')
 
 // constant
 const UserService = require('./services')
+const ProductService = require('../product/services')
 const JWTService = require('../../modules/jwt/jwt')
 const constants = require('./constants')
 
@@ -12,6 +13,7 @@ class UserController {
     constructor() {
         this.userService = new UserService()
         this.jwtService = new JWTService()
+        this.productService = new ProductService()
     }
 
     register = async (req, res) => {
@@ -104,6 +106,15 @@ class UserController {
         await this.userService.editProfile(body, author)
         return res.json({
             messageCode: 'success',
+        })
+    }
+
+    getDetailProduct = async (req, res) => {
+        const isValid = await Validator(req, res)
+        if (!isValid) return
+        const response = await this.productService.findOne(req)
+        return res.json({
+            data: { ...response[0] },
         })
     }
 }

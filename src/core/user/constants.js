@@ -50,6 +50,29 @@ const standardUserSearch = {
     },
 }
 
+const searchUserByAdmin = {
+    type: ERecord.user,
+    results: [
+        `${ERecord.user}.id`,
+        `${ERecord.user}.firstName`,
+        `${ERecord.user}.lastName`,
+        `${ERecord.user}.email`,
+        `${ERecord.user}.gender`,
+        `${ERecord.user}.phone`,
+        `${ERecord.user}.createdAt`,
+        `${ERecord.user}.updatedAt`,
+        `${ERecord.user}.isInactived`,
+        `${ERecord.user}.isDeleted`,
+        `${ERecord.user}.address`,
+        `${ERecord.user}.role`,
+        `${ERecord.user}.dob`,
+    ],
+    filters: {
+        [`${ERecord.user}.isDeleted`]: [0],
+        [`${ERecord.user}.isInactived`]: [0],
+    },
+}
+
 const adminFindAllUser = {
     type: ERecord.user,
     results: [
@@ -60,6 +83,7 @@ const adminFindAllUser = {
         `${ERecord.user}.dob`,
         `${ERecord.user}.email`,
         `${ERecord.user}.phone`,
+        `${ERecord.user}.memo`,
         `${ERecord.user}.role`,
         `${ERecord.user}.address`,
         `${ERecord.user}.isInactived`,
@@ -78,4 +102,5 @@ module.exports = {
     standardUserSearch,
     pickUserEditProfile,
     adminFindAllUser,
+    searchUserByAdmin,
 }

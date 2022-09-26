@@ -1,6 +1,10 @@
 const RecordService = require('../../lib/until/record')
 const knex = require('../../database/knex')
-const { standardUserSearch, adminFindAllUser } = require('./constants')
+const {
+    standardUserSearch,
+    adminFindAllUser,
+    searchUserByAdmin,
+} = require('./constants')
 const { ERecord } = require('../../lib/enum/enum')
 const JWT = require('../../modules/jwt/jwt')
 const moment = require('moment')
@@ -42,6 +46,16 @@ class UserServices extends RecordService {
         })
     }
 
+    findOneByAdmin = async (req) => {
+        return await this.createSearch({
+            ...searchUserByAdmin,
+            filters: {
+                ...searchUserByAdmin.filters,
+                [`${ERecord.user}.id`]: [req.params.id],
+            },
+        })
+    }
+
     findAllUserByAdmin = async (req) => {
         const filters = {}
         for (const param in req.query) {
@@ -56,7 +70,6 @@ class UserServices extends RecordService {
         return await this.createSearch({
             ...adminFindAllUser,
             filters: {
-                ...standardUserSearch.filters,
                 ...filters,
             },
             pagination: { limit: req.query.limit, offset: req.query.offset },
@@ -126,6 +139,36 @@ class UserServices extends RecordService {
                     updatedAt: knex.raw('now()'),
                 })
                 .transacting(trn)
+
+            await trn.commit()
+            return {
+                success: true,
+            }
+        } catch (error) {
+            await trn.rollback()
+            throw error
+        }
+    }
+
+    save = async (newData) => {
+        const trn = await knex.transaction()
+        try {
+            const findUserExits = await this.createSearch({
+                type: ERecord.user,
+                results: [`${ERecord.user}.id`],
+                filters: {
+                    [`${ERecord.user}.isDeleted`]: [0],
+                    [`${ERecord.user}.id`]: [newData.id],
+                },
+            })
+            if (findUserExits.length === 0) {
+                throw Error('User  Not found!')
+            }
+
+            await knex(`${ERecord.user}`)
+                .transacting(trn)
+                .where('id', '=', newData.id)
+                .update(newData)
 
             await trn.commit()
             return {
