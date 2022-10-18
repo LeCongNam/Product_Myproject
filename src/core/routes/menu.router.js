@@ -3,11 +3,11 @@ const router = express.Router()
 
 const MenuController = require('../menu/controllers')
 const menuSchemas = require('../menu/dto')
-const JWT = require('../../modules/jwt/jwt')
+// const JWT = require('../../modules/jwt/jwt')
 
 // constant
 const menuController = new MenuController()
-const jwtService = new JWT()
+// const jwtService = new JWT()
 
 router.get(
     '/',

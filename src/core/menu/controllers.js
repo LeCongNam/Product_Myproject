@@ -4,7 +4,7 @@ const MenuServices = require('./services')
 
 class MenuController {
     menuServices
- 
+
     constructor() {
         this.menuServices = new MenuServices()
     }

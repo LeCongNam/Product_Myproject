@@ -2,7 +2,7 @@ const { checkSchema } = require('express-validator')
 
 const getAllProduct = checkSchema({
     categoryId: {
-        isString: true
+        isString: true,
     },
 })
 
