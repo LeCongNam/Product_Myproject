@@ -10,6 +10,7 @@ const constants = require('./constants')
 class UserController {
     userService
     jwtService
+    //  chuyện tình ta giờ đâu chỉ 1 hơi  kéo sẽ tan
     constructor() {
         this.userService = new UserService()
         this.jwtService = new JWTService()
@@ -26,7 +27,6 @@ class UserController {
         if (success)
             return res.json({
                 messageCode: '200a',
-                x,
             })
         return res.json({
             messageCode: '420d',

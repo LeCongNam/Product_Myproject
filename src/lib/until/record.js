@@ -32,12 +32,19 @@ class RecordService {
                 }
             }
 
+            if (search.leftJoins) {
+                for (const item of search.leftJoins) {
+                    query.leftJoin(item.table, item.first, item.second)
+                    queryCount.leftJoin(item.table, item.first, item.second)
+                }
+            }
+
             if (search.likes) {
                 for (const like of search.likes) {
                     query.where(
                         like.field,
                         'like',
-                        `%${like.value.replaceAll('%', '\\%')}%`
+                        `%${decodeURIComponent(like['value'])}%`
                     )
                 }
             }
