@@ -40,6 +40,19 @@ components:
           type: string
           example: "lecongnam@gmail.com"
 paths:
+  /api/user/register:
+    get:
+      summary: Get Data Profile User
+      description: Get Data Profile User
+      tags: [ User ]
+      parameters:
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GET_PROFILE'
   /api/user/login:
     post:
       summary: Get Data Profile User
